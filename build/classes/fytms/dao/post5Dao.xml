@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fytms.dao.post5Dao">
+
+
+	<select id="checkTicket" resultType="fytms.bean.dataTicketBean">
+		select * from
+		t_data_ticket where tickNo=#{tickNo} and state='未检票';
+	</select>
+	<select id="updateCheckTicket" resultType="fytms.bean.dataTicketBean">
+		UPDATE `FYTMS`.`t_data_ticket` SET `state`=#{state} ,`checkDate`=#{checkDate}    WHERE `tickNo`=#{tickNo};
+	</select>
+	
+	<select id="checkAllTicket" resultType="fytms.bean.dataTicketBean">
+		select * from
+		t_data_ticket where state='已检票';
+	</select>
+	
+
+</mapper>

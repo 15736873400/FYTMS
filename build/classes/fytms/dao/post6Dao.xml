@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fytms.dao.post6Dao">
+
+	<select id="searchAllTravel"
+		resultType="fytms.bean.sysTravelBean">
+		SELECT * FROM FYTMS.t_sys_travel where legalNo
+		!='000000000000000' and legalState='正常'
+	</select>
+
+	<select id="searchTravel" resultType="fytms.bean.sysTravelBean">
+		SELECT * FROM
+		FYTMS.t_sys_travel where legalNo = #{legalNo};
+	</select>
+
+	<select id="addTravel" resultType="fytms.bean.sysTravelBean">
+		INSERT INTO
+		`FYTMS`.`t_sys_travel` (`legalNo`, `travelName`,
+		`travelPassword`,
+		`legalName`, `legalPhone`, `money`, `legalState`) VALUES
+		(#{legalNo},
+		#{travelName},
+		#{travelPassword}, #{legalName},
+		#{legalPhone},#{money},#{legalState});
+	</select>
+
+	<select id="changeTravel" resultType="fytms.bean.sysTravelBean">
+		UPDATE
+		`FYTMS`.`t_sys_travel` SET `travelName`= #{travelName},
+		`legalName`=#{legalName},
+		`legalPhone`=#{legalPhone},
+		`money`=#{money}
+		WHERE
+		`legalNo`=#{legalNo};
+	</select>
+
+	<select id="travelState" resultType="fytms.bean.sysTravelBean">
+		UPDATE
+		`FYTMS`.`t_sys_travel` SET `legalState`='已删除' WHERE
+		`legalNo`=#{legalNo};
+	</select>
+
+	<!-- <select id="deleteTravel" resultType="fytms.bean.sysTravelBean"> DELETE 
+		FROM `FYTMS`.`t_sys_travel` WHERE `legalNo`=#{legalNo}; </select> -->
+
+	<select id="searchAllShip" resultType="fytms.bean.dataShipBean">
+		SELECT * FROM
+		FYTMS.t_data_ship datas,fytms.t_dic_shipstate dics where
+		datas.shipState=dics.idt_dic_shipstate;
+	</select>
+
+	<select id="searchShip" resultType="fytms.bean.dataShipBean">
+		SELECT * FROM
+		FYTMS.t_data_ship datas,fytms.t_dic_shipstate dics where
+		datas.shipState=dics.idt_dic_shipstate and shipNo = #{shipNo};
+	</select>
+
+	<select id="searchAllShipstate"
+		resultType="fytms.bean.dataShipBean">
+		SELECT * FROM FYTMS.t_dic_shipstate where dShipstate !=
+		'已删除';
+	</select>
+
+	<!-- <select id="searchShipstate" resultType="fytms.bean.dataShipBean"> 
+		SELECT * FROM FYTMS.t_dic_shipstate where idt_dic_shipstate=#{idt_dic_shipstate}; 
+		</select> -->
+
+	<select id="changeShip" resultType="fytms.bean.dataShipBean">
+		UPDATE `FYTMS`.`t_data_ship`
+		SET `shipName`=#{shipName},
+		`seatNum`=#{seatNum},`shipState`=#{shipState} WHERE `shipNo`=
+		#{shipNo};
+	</select>
+
+	<select id="addShip" resultType="fytms.bean.dataShipBean">
+		INSERT INTO
+		`FYTMS`.`t_data_ship` (`shipNo`, `shipName`, `seatNum`,
+		`shipState`)
+		VALUES (#{shipNo}, #{shipName}, #{seatNum},
+		#{shipState});
+	</select>
+
+	<select id="shipState" resultType="fytms.bean.dataShipBean">
+		UPDATE `FYTMS`.`t_data_ship`
+		SET `shipState`='0' WHERE `shipNo`=#{shipNo};
+	</select>
+
+	<select id="searchAllShiptime"
+		resultType="fytms.bean.dataShipBean">
+		SELECT * FROM FYTMS.t_data_shiptime tdst,FYTMS.t_data_ship
+		tds,FYTMS.t_dic_shiptimestate dsts where tdst.shipNo=tds.shipNo and
+		tdst.shiptimeState=dsts.idt_dic_shiptimestate and
+		tdst.shiptimeState!='0';
+	</select>
+
+	<select id="searchShiptime" resultType="fytms.bean.dataShipBean">
+		SELECT * FROM
+		FYTMS.t_data_shiptime tdst,FYTMS.t_data_ship
+		tds,FYTMS.t_dic_shiptimestate dsts where tdst.shipNo=tds.shipNo and
+		tdst.shiptimeState=dsts.idt_dic_shiptimestate and
+		tdst.shiptimeState!='0' and
+		(tdst.shiptimeNo=#{shiptimeNo} ||
+		tds.shipNo=#{shipNo});
+	</select>
+
+	<select id="searchPort" resultType="fytms.bean.dataShipBean">
+		SELECT * FROM
+		FYTMS.t_dic_port where idt_dic_port=#{idt_dic_port};
+	</select>
+
+	<select id="searchAllNormalShip"
+		resultType="fytms.bean.dataShipBean">
+		SELECT * FROM
+		FYTMS.t_data_ship datas,fytms.t_dic_shipstate
+		dics where
+		datas.shipState=dics.idt_dic_shipstate and
+		dics.dShipstate='正常';
+	</select>
+
+	<select id="searchAllPort" resultType="fytms.bean.dataShipBean">
+		SELECT * FROM
+		FYTMS.t_dic_port;
+	</select>
+
+	<select id="addShiptime" resultType="fytms.bean.dataShipBean">
+		INSERT INTO
+		`FYTMS`.`t_data_shiptime` (`shiptimeNo`, `price`, `shipNo`,
+		`startTime`, `startPort`, `arrTime`, `arrPort`, `sellTime`,
+		`shiptimeState`) VALUES (#{shiptimeNo}, #{price}, #{shipNo},
+		#{startDate}, #{startPort}, #{arrDate}, #{arrPort}, #{sellDate},
+		#{shiptimeState});
+	</select>
+
+	<select id="changeShiptime" resultType="fytms.bean.dataShipBean">
+		UPDATE
+		`FYTMS`.`t_data_shiptime` SET `price`=#{price}, `shipNo`=#{shipNo},
+		`startTime`=#{startDate}, `startPort`=#{startPort},
+		`arrTime`=#{arrDate}, `arrPort`=#{arrPort},
+		`sellTime`=#{sellDate}
+		WHERE
+		`shiptimeNo`=#{shiptimeNo};
+	</select>
+
+	<select id="deleteShiptime" resultType="fytms.bean.dataShipBean">
+		UPDATE
+		`FYTMS`.`t_data_shiptime` SET `shiptimeState`='0' WHERE
+		`shiptimeNo`=#{shiptimeNo};
+	</select>
+
+	<select id="searchAllUser" resultType="fytms.bean.sysUserBean">
+		SELECT * FROM
+		FYTMS.t_sys_user where empState!='已删除';
+	</select>
+
+	<select id="searchUser" resultType="fytms.bean.sysUserBean">
+		SELECT * FROM
+		FYTMS.t_sys_user where (empNo=#{empNo} || empName=#{empName})
+		and
+		empState!='已删除';
+	</select>
+
+	<select id="searchUserNoPic" resultType="fytms.bean.sysUserBean">
+		SELECT `empNo`,
+		`empPassword`, `empName`,
+		`empSex`, `empBirthday`,
+		`empMobile`,
+		`empAddress`, `empPost`,
+		`empDept` FROM FYTMS.t_sys_user where
+		(empNo=#{empNo} || empName=#{empName})
+		and empState!='已删除';
+	</select>
+
+	<select id="searchAllSex" resultType="fytms.bean.sysUserBean">
+		SELECT * FROM
+		FYTMS.t_dic_sex;
+	</select>
+
+	<select id="searchAllPost" resultType="fytms.bean.sysUserBean">
+		SELECT * FROM
+		FYTMS.t_dic_post;
+	</select>
+
+	<select id="searchAllDept" resultType="fytms.bean.sysUserBean">
+		SELECT * FROM
+		FYTMS.t_dic_dept;
+	</select>
+
+	<select id="searchSex" resultType="fytms.bean.sysUserBean">
+		SELECT * FROM FYTMS.t_dic_sex
+		where idt_dic_sex=#{empSex};
+	</select>
+
+	<select id="searchPost" resultType="fytms.bean.sysUserBean">
+		SELECT * FROM
+		FYTMS.t_dic_post where idt_dic_post=#{empPost};
+	</select>
+
+	<select id="searchDept" resultType="fytms.bean.sysUserBean">
+		SELECT * FROM
+		FYTMS.t_dic_dept where idt_dic_dept=#{empDept};
+	</select>
+
+	<select id="addUser" resultType="fytms.bean.sysUserBean">
+		INSERT INTO `FYTMS`.`t_sys_user`
+		(`empNo`, `empPassword`, `empName`,
+		`empSex`, `empBirthday`,
+		`empMobile`, `empAddress`, `empPost`,
+		`empDept`,
+		`empPicture`,`empState`) VALUES
+		(#{empNo}, #{empPassword}, #{empName},
+		#{empSex},
+		#{empBir},
+		#{empMobile}, #{empAddress}, #{empPost},
+		#{empDept}, #{empPicture},'正常');
+	</select>
+
+	<select id="changeUser" resultType="fytms.bean.sysUserBean">
+		UPDATE `FYTMS`.`t_sys_user`
+		SET `empPassword`=#{empPassword},
+		`empName`=#{empName},
+		`empSex`=#{empSex}, `empBirthday`=#{empBir},
+		`empMobile`=#{empMobile},
+		`empAddress`=#{empAddress},
+		`empPost`=#{empPost},
+		`empDept`=#{empDept},`empPicture`=#{empPicture}
+		WHERE `empNo`=#{empNo};
+	</select>
+
+	<select id="changeUserNoPic" resultType="fytms.bean.sysUserBean">
+		UPDATE
+		`FYTMS`.`t_sys_user` SET `empPassword`=#{empPassword},
+		`empName`=#{empName}, `empSex`=#{empSex}, `empBirthday`=#{empBir},
+		`empMobile`=#{empMobile}, `empAddress`=#{empAddress},
+		`empPost`=#{empPost}, `empDept`=#{empDept}
+		WHERE `empNo`=#{empNo};
+	</select>
+
+	<select id="deleteUser" resultType="fytms.bean.sysUserBean">
+		UPDATE
+		`FYTMS`.`t_sys_user`
+		SET `empState`='已删除', `empNo`=#{empPassword} WHERE `empNo`=#{empNo};
+	</select>
+</mapper>

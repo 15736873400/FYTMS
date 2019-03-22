@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fytms.dao.travelDao">
+    <select id="searchSpeTeam" resultType="String">
+    select teamNo from (select  teamNo from (SELECT * FROM FYTMS.t_data_ticket where tickTravel=#{legalNo} 
+    and state='未检票' )as a group by a.teamNo order by a.teamNo desc) as b 
+where teamNo not in (select  teamNo from (SELECT * FROM FYTMS.t_data_ticket where tickTravel=#{legalNo} and passportNo =#{passportNo} and state='未检票')as a group by a.teamNo order by a.teamNo desc) ;
+</select>
+
+    <select id="searchSellTime" resultType="int">
+        SELECT sellTime FROM FYTMS.t_data_shiptime where shiptimeNo=#{shiptimeNo};
+    </select>
+    
+     <select id="searchSpeTeam2" resultType="String">
+    select b.teamNo from (select teamNo from (select  teamNo from (SELECT * FROM FYTMS.t_data_ticket where tickTravel=#{legalNo}  
+    and state='未检票')as a group by a.teamNo order by a.teamNo desc) as b 
+where teamNo not in (select  teamNo from (SELECT * FROM FYTMS.t_data_ticket where tickTravel=#{legalNo} and passportNo =#{passportNo} and state='未检票')as a group by a.teamNo order by a.teamNo desc)
+)as b where b.teamNo like '%${teamNo}%'; ;
+</select>
+
+    
+    
+    
+    <select id="loginByLegalNo" resultType="fytms.bean.sysTravelBean">
+		select *
+		from t_sys_travel where legalNo=#{leno}
+    </select>
+
+    <select id="wjpTraveller" resultType="fytms.bean.dataTravellerBean">
+	SELECT * FROM FYTMS.t_data_traveller tdt,fytms.t_dic_sex tds,fytms.t_sys_travel tst
+where tdt.trSex=tds.idt_dic_sex and tdt.trTravel=tst.legalNo and tdt.trPort='0' and tst.legalNo=#{legalNo};
+    </select>
+
+    <update id="changePassword">
+		UPDATE `FYTMS`.`t_sys_travel` SET `travelPassword`=#{travelPassword} WHERE `legalNo`=#{legalNo};
+    </update>
+
+    <select id="findSex" resultType="fytms.bean.dataTravellerBean">
+		select * from
+		t_dic_sex
+    </select>
+
+    <select id="selectSex" resultType="String">
+		select dSex from
+		t_dic_sex where idt_dic_sex=#{trSex};
+    </select>
+
+    <select id="yesTraveller" resultType="fytms.bean.dataTravellerBean">
+	    SELECT * FROM FYTMS.t_data_traveller tdt,fytms.t_dic_sex tds,fytms.t_sys_travel tst
+where tdt.trSex=tds.idt_dic_sex and tdt.trTravel=tst.legalNo and tdt.passportNo=#{passportNo};
+    </select>
+
+
+    <update id="addTraveller2">
+		UPDATE `FYTMS`.`t_data_traveller` SET `trName`=#{trName}, `trSex`=#{trSex},`trBirthday`=#{trBirthday}, `trBorAdd`=#{trBorAdd},`trNation`=#{trNation},`trTravel`=#{legalNo},`trPort`='0' WHERE `passportNo`=#{passportNo};
+    </update>
+
+
+    <insert id="addTraveller">
+		INSERT INTO `FYTMS`.`t_data_traveller` (`passportNo`, `trName`, `trSex`, `trBirthday`,`trBorAdd`, `trNation`, `trTravel`,`trPort`) VALUES (#{passportNo},
+		#{trName}, #{trSex},#{trBirthday}, #{trBorAdd},#{trNation}, #{legalNo},#{trPort})	
+    </insert>
+
+
+    <update id="upTravel">
+		UPDATE `FYTMS`.`t_data_traveller` SET `trTravel`=#{legalNo},`trPort`='0' WHERE `passportNo`=#{passportNo};    
+    </update>
+
+
+    <select id="searchPassportNo" resultType="fytms.bean.dataTravellerBean">
+	    SELECT * FROM FYTMS.t_data_traveller tdt,fytms.t_dic_sex tds,fytms.t_sys_travel tst
+where tdt.trSex=tds.idt_dic_sex and tdt.trTravel=tst.legalNo and tdt.passportNo like '%${passportNo}%' and tdt.trTravel=#{legalNo} and tdt.trPort='0';
+    </select>
+
+
+    <select id="searchAllPassportNo" resultType="fytms.bean.dataTravellerBean">
+	    SELECT * FROM FYTMS.t_data_traveller tdt,fytms.t_dic_sex tds,fytms.t_sys_travel tst
+where tdt.trSex=tds.idt_dic_sex and tdt.trTravel=tst.legalNo and tdt.passportNo = #{passportNo};
+    </select>
+
+
+    <update id="deleteTraveller">
+		UPDATE `FYTMS`.`t_data_traveller` SET `trTravel`='000000000000000' WHERE `passportNo`=#{passportNo};
+    </update>
+
+
+    <select id="sss1" resultType="String">
+        SELECT shiptimeNo FROM FYTMS.t_data_shiptime
+    </select>
+
+
+    <select id="searchSingleShiptime" resultType="fytms.bean.dataShipBean">
+    select ab.seatNum-(
+SELECT  count(a.tickTime)  from FYTMS.t_data_ticket as a where tickTime=#{shiptimeNo} and DATE_FORMAT(startDate,'%Y-%m-%d')=DATE_FORMAT(#{Start},'%Y-%m-%d') and
+state='未检票'
+) as sSeat,ab.shiptimeNo,ab.price,ab.shipNo,ab.startTime,b.dPort as startPort,ab.arrTime,c.dPort as arrPort,ab.sellTime,
+ab.shiptimeState,ab.shipName,ab.shipState, ab.dShipstate,ab.dShiptimestate 
+from 
+(select s.seatNum,a.shiptimeNo,a.price,a.shipNo,a.startTime,a.startPort,a.arrTime,a.arrPort,a.sellTime,a.shiptimeState,s.shipName,s.shipState, ds.dShipstate,dts.dShiptimestate 
+from FYTMS.t_data_shiptime a ,FYTMS.t_data_ship s,FYTMS.t_dic_shipstate ds,FYTMS.t_dic_shiptimestate dts 
+where a.shipNo=s.shipNo 
+and dts.idt_dic_shiptimestate=a.shiptimeState 
+and ds.idt_dic_shipstate = s.shipState 
+and a.shiptimeNo=#{shiptimeNo}
+) as ab
+left join FYTMS.t_dic_port b on ab.startPort=b.idt_dic_port
+left join FYTMS.t_dic_port c on ab.arrPort=c.idt_dic_port   order by startTime	;
+    
+    </select>
+
+
+    <select id="findTType" resultType="fytms.bean.dataTicketBean">
+	    select * from FYTMS.t_dic_ticketType;
+	    
+    </select>
+
+
+    <select id="findType" resultType="fytms.bean.dataTicketBean">
+	    select * from FYTMS.t_dic_ticketType where idt_dic_ticketType=#{sign};
+	    
+    </select>
+
+    <select id="findPrice" resultType="float">
+		SELECT price FROM FYTMS.t_data_shiptime where shiptimeNo=#{shiptimeNo};
+    </select>
+
+
+    <update id="upM">
+	UPDATE `FYTMS`.`t_sys_travel` SET `money`=#{money} WHERE `legalNo`=#{legalNo};
+    </update>
+
+
+    <insert id="addTicket2">
+		INSERT INTO t_data_ticket (`tickNo`, `tickDate`,`startDate`,`returnDate`, `tickTime`, `passportNo`, `tickTravel`, `isGuide`, `teamNo`,`tickType`, `state`,`tickCost`)
+		VALUES (#{tickNo},
+		#{tickDate},#{startDate},#{returnDate}, #{tickTime}, #{passportNo}, (select trTravel from t_data_traveller where passportNo=#{passportNo}),#{isGuide},#{teamNo},#{tickType},#{state},#{tickCost}
+		)
+    </insert>
+
+
+    <select id="searchTeam" resultType="String">
+		select  teamNo from (SELECT * FROM FYTMS.t_data_ticket where tickTravel=#{legalNo} and state='未检票')as a group by a.teamNo order by a.teamNo desc;
+    </select>
+
+
+    <select id="searchTeam2" resultType="String">
+		
+		select b.teamNo from (select  teamNo from (SELECT * FROM FYTMS.t_data_ticket where tickTravel=#{legalNo} and state='未检票')as a group by a.teamNo order by a.teamNo desc)as b where b.teamNo like '%${teamNo}%';
+	    
+    </select>
+
+
+    <select id="showTeam" resultType="fytms.bean.teamInfo">
+		SELECT 
+a.startDate,
+a.returnDate,
+a.tickNo,		
+a.tickDate,
+a.passportNo,
+b.trName,
+c.dSex,
+d.dTicketType,
+a.tickTime,
+a.isGuide,
+a.state,
+a.tickCost,
+a.tickRefund,
+a.checkDate
+FROM 
+FYTMS.t_data_ticket a,
+FYTMS.t_data_traveller b ,
+FYTMS.t_dic_sex c,
+FYTMS.t_dic_ticketType d
+where a.passportNo=b.passportNo and b.trSex=c.idt_dic_sex and a.tickType=d.idt_dic_ticketType
+and 
+a.teamNo like '%${teamNo}%';
+    </select>
+
+
+
+    <select id="searchTick" resultType="fytms.bean.dataTicketBean">
+        SELECT * FROM FYTMS.t_data_ticket where tickNo=#{tickNo};
+    </select>
+
+
+
+    <select id="searchTax" resultType="fytms.bean.tax">
+SELECT * FROM FYTMS.t_dic_refundTax order by idt_dic_refundTax
+    </select>
+
+
+
+    <update id="deleteOne">
+    UPDATE `FYTMS`.`t_data_ticket` SET `state`='已退票', `tickRefund`=#{tickRefund}, `checkDate`=NOW()
+    WHERE `tickNo`=#{tickNo};  
+    </update>
+
+
+    <update id="upM2">
+	UPDATE `FYTMS`.`t_sys_travel` SET `refund`=#{money} WHERE `legalNo`=#{legalNo};
+    </update>
+</mapper>
