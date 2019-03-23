@@ -10,6 +10,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+<script type="text/javascript">
+
+window.location.href="/FYTMS/post6/searchTravel"; 
+
+</script>
 	userIndex
 	<a href="${pageContext.request.contextPath }/post4/searchTraveller">窗口售票</a>
 	<a href="${pageContext.request.contextPath }/post5/checkTicket">检票</a>

@@ -19,89 +19,169 @@
 <script type="text/javascript" charset="UTF-8" src="../JAreaSelect-master/js/JAreaData.js"></script>
 <script type="text/javascript" charset="UTF-8" src="../JAreaSelect-master/js/JAreaSelect.js"></script>
 <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+<!-- basic styles -->
 
+		<link href="${pageContext.request.contextPath }/assets/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/font-awesome.min.css" />	
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/jquery-ui-1.10.3.custom.min.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/chosen.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/datepicker.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/daterangepicker.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/colorpicker.css" />
+		<!-- fonts -->
+		<!-- ace styles -->
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/ace.min.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/ace-skins.min.css" />		
+		<!-- inline styles related to this page -->
+		<!-- ace settings handler -->
+		<script src="${pageContext.request.contextPath }/assets/js/ace-extra.min.js"></script>	
 <title>Insert title here</title>
 </head>
 <body>
 	<!-- angularjs区间范围 -->
-	<div ng-app="myApp" ng-controller="myCtrl">
-		<form method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath }/post6/changeUser" >
-			员工编号:<input type="text" readonly="readonly" value="${list.empNo }" name="empNo"><br /> 
-			
-			员工密码:${target}
-			<button type="button" onclick="btn1()">修改</button>
-			<div id="div1" style="background:#999999; display:none;">
-			请输入修改的密码:<input
-				type="text" name="empPassword" value="${target}"><br /> 
-			</div>
-			
-			<br /> 员工姓名:${list.empName }
-			<button type="button" onclick="btn2()">修改</button>
-			<div id="div2" style="background:#999999; display:none;">
-			请输入员工姓名:<input
+	
+
+
+<div class="main-container" id="main-container"  ng-app="myApp" ng-controller="myCtrl">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('main-container', 'fixed')
+				} catch (e) {}
+			</script>
+			<div class="main-container-inner">		
+				<div class="page-content">	
+				<div class="page-header">
+					</div> <!-- /.page-header -->				
+					<div class="row">
+						<div class="col-xs-12">
+							<!-- PAGE CONTENT BEGINS -->
+							<div class="space-4"></div>
+							<div class="space-4"></div>
+							<div class="space-4"></div>
+												
+	<form  class="form-horizontal"  method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath }/post6/changeUser" >
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"  > 请输入员工编号 </label>
+									<div class="col-sm-9">
+										<input type="text" readonly="readonly" value="${list.empNo }" name="empNo">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入密码 </label>
+									<div class="col-sm-9">
+										<input
+				type="text" name="empPassword" value="${list.empPassword}">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" > 请输入员工姓名 </label>
+									<div class="col-sm-9">
+										<input
 				type="text" name="empName" value="${list.empName}">
-			</div>
-			
-			
-			<br /> 性别:${sex }
-			<button type="button" onclick="btn3()">修改</button>
-			<div id="div3" style="background:#999999; display:none;">
-			请选择性别:<select
+				</div>
+								</div>
+																				
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请选择性别 </label>
+									<div class="col-sm-9">
+										
+									<select
 				name="empSex">
 				<option value="0">请选择性别</option>
 				<c:forEach items="${lSex}" var="lSex">
 					<option value="${lSex.idt_dic_sex }">${lSex.dSex }</option>
 				</c:forEach>
-			</select>
-			</div>
-			
-			<br /> 出生日期:${lBir }
-			<button type="button" onclick="btn4()">修改</button>
-			<div id="div4" style="background:#999999; display:none;">
-			请选择出生日期:<input type="text" value="${lBir}" readonly="readonly" id="empBir"
+			</select>		
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label  class="col-sm-3 control-label no-padding-right" for="form-field-2">请选择出生日期 </label>
+									<div class="col-sm-9" >
+									<input type="text" value="${lBir}" readonly="readonly" id="empBir"
 				name="empBir">
-			</div>
-			
-			
-			<br /> 手机号:${list.empMobile }
-			<button type="button" onclick="btn5()">修改</button>
-			<div id="div5" style="background:#999999; display:none;">
-			请输入手机号:<input type="text" value="${list.empMobile}"
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" > 请输入手机号 </label>
+									<div class="col-sm-9">
+										<input type="text" value="${list.empMobile}"
 				name="empMobile">
-			</div>
-			
-			<br /> 地址:${list.empAddress }
-			<button type="button" onclick="btn6()">修改</button>
-			<div id="div6" style="background:#999999; display:none;">
-			请选择地址:
-			<div name="address1" id="area-select-box" ng-model="address1">
-			</div> 
-			请填写具体地址:<input type="text" ng-model="address2"> 
-			</div>
-			
-			
-			<br /> 职务岗位:${dept } - ${post }
-			<button type="button" onclick="btn7()">修改</button>
-			<div id="div7" style="background:#999999; display:none;">
-			请选择具体岗位职务:<select id="deptPost" name="deptPost" ></select>
-			</div>
-				
-			<br /> 照片:<img id="img1" height="80px" width="80px" src="../pic/${list.empNo }.png"/>
-			<button type="button" id="btn8">修改</button>
-			<div id="div8" style="background:#999999; display:none;">
-			上传图片:<input type="file" id="file" name="cfile" onchange="previewImg(this, 'img1')" />
-			</div>	
-			
-			
-				<input type="hidden" value="{{address}}" name="empAddress">
+									</div>
+								</div>
+								
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请选择地址 </label>
+									<div class="col-sm-9">
+									<div name="address1" id="area-select-box" ng-model="address1" class="col-xs-10 col-sm-5"></div> 
+									<input type="text" ng-model="address2"> 
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1" > 请填写具体地址 </label>
+									<div class="col-sm-9">
+										<input type="text" ng-model="address2" class="col-xs-10 col-sm-5" >
+		              	                <input type="hidden" value="{{address}}" name="empAddress">
+									</div>
+								</div>
+								
+								
+								<!-- 请选择具体岗位职务:<div><select id="deptPost" name="deptPost" ng-model="dept"></select></div>
 				<input type="hidden" value="{{dept}}" name="empDept">
 				<input type="hidden" value="{{post}}" name="empPost">
-				<input type="hidden" value="{{pic}}" name="empState">
-				
-				<br /> <input type="submit" value="提交" id="mouse">
-				 </form>
-	</div>
-
+								 -->
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请选择具体岗位职务 </label>
+									<div class="col-sm-9">
+										<div><select id="deptPost" name="deptPost" ></select>
+			</div></div>
+										<input type="hidden" value="{{dept}}" name="empDept">
+				                        <input type="hidden" value="{{post}}" name="empPost">
+										<!-- <input name="legalPhone" type="text" id="form-field-1"
+										 placeholder="请输入法人手机号" class="col-xs-10 col-sm-5" /> -->
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="form-field-2" style="    text-align: right;">上传图片 </label>
+									<div class="col-sm-9">
+									<input type="file" id="file" name="cfile" onchange="previewImg(this, 'img1')" />
+			</div>	
+									<img id="img1" height="80px" width="80px" src="../pic/${list.empNo }.png"/>
+										
+									</div>
+								</div>
+								<input type="hidden" value="{{address}}" name="empAddress">
+				<input type="hidden" value="{{dept}}" name="empDept">
+				<input type="hidden" value="{{post}}" name="empPost">
+				<input type="hidden" value="{{pic}}" name="empState">							
+															
+								<div class="space-4"></div>
+								<div class="space-4"></div>
+								<div class="clearfix form-actions">
+									<div class="col-md-offset-3 col-md-9">
+										<!-- <button  id="mouse" class="btn btn-info" type="submit">
+											<i class="icon-ok bigger-110"></i>
+											Submit
+										</button> -->
+										<input class="btn btn-info" type="submit" id="mouse" value="提交" >
+										 <!-- <i class="icon-ok bigger-110">	</i> 
+											 -->
+										<!-- &nbsp; &nbsp; &nbsp; -->
+										<a class="btn"  href="/FYTMS/post6/searchUser"><i class="icon-undo bigger-110"></i>Return</a>			
+									</div>
+								</div>
+							</form>	
+	
+	
+	
+<%@include file="addtable3.jsp" %>
 <script>
 // 预览＋文件类型和大小判定
 function previewImg(file, imgId){
@@ -115,7 +195,8 @@ function previewImg(file, imgId){
 			console.log(file.files[0].type);
 			if((file.files[0].type=="image/jpeg") || (file.files[0].type=="image/png"))
 				{
-				size = file.files[0].size/1024/1024;
+				size = file.files[0].size/1024;
+				size=size/1024;
 				console.log(size);
 				if(size>=0.5)
 				{

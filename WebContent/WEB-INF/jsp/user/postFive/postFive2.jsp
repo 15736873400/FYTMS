@@ -9,14 +9,22 @@
 <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="../js/jquery.tablesorter.js"></script>
 <title>Insert title here</title>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/layui.css" />
 </head>
 <body>
-<form action="${pageContext.request.contextPath }/post5/checkTicket">
+<form class="layui-form"   action="${pageContext.request.contextPath }/post5/checkTicket">
+		<div class="layui-form-item">
+		 <label class="layui-form-label" >请输入票号</label>
+		 <div class="layui-input-block">
+		 <input class="layui-input"  type="text" name="tickNo" placeholder="请输入票号" /> 
+		 </div>
+		 </div>
 		
-		<input type="text" name="tickNo" placeholder="请输入票号" /> 
 			
-		<button type="submit">检票</button>
+		<button type="submit"  class="layui-btn"  style="margin-left:20px;">检票</button>
 	</form>
+
 	<h1 style="color: red">无效的票号</h1>
 <script type="text/javascript">
 $(function() {
@@ -25,7 +33,7 @@ $(function() {
 </script>
 
 
-	<table id="myTable" class="tablesorter">
+	<table id="myTable"  class=" layui-table tablesorter" >
 		<thead>
 			<tr>
 				<th>票号</th>
