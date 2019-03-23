@@ -5,13 +5,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="fytms.dao.loginDao">
 	<select id="loginByEmpNo" resultType="fytms.bean.sysUserBean">
 		select empNo,empPassword,empPost,empName,empRole
-		from t_sys_user where empNo=#{name}
+		from t_sys_user where empNo=#{name} and empState='正常'
 	</select>
 
 	<select id="loginByLegalNo"
 		resultType="fytms.bean.sysTravelBean">
 		select * from t_sys_travel where legalNo=#{name} and
-		legalNo !='000000000000000';
+		legalNo !='000000000000000' and legalState='正常';
 	</select>
 
 	
